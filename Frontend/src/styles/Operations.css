@@ -1,0 +1,14 @@
+.operations-container{
+    background-color: rgb(227, 243, 240);
+    -webkit-box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0 0 15px rgba(0,0,0,0.1);
+     box-shadow: 0 0 15px rgba(0,0,0,0.1);
+     border-radius: 5px;
+     padding: 10px;
+     display: flex;
+     flex-direction: column;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     align-items: stretch;
+     row-gap: 0.875rem;
+}
