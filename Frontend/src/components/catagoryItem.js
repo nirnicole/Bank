@@ -7,8 +7,18 @@ class CatagoryItem extends Component {
 		this.state = {}
 	}
 
+	_capitalize = (s) => s[0].toUpperCase() + s.slice(1)
+
 	render() {
-		return <label className="catagoryItem">Transportation: 20</label>
+		let details = this.props.details
+		let category = details.TransactionCategory
+		category = this._capitalize(category)
+		let sum = details.categorySum
+		return (
+			<label className="catagoryItem">
+				{category}: {sum}
+			</label>
+		)
 	}
 }
 

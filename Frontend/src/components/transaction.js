@@ -10,12 +10,15 @@ class Transaction extends Component {
 	_getCostClass = (cost) => (cost >= 0 ? "cost-positive" : "cost-negetive")
 
 	render() {
-		let cost = 100
+		let transaction = this.props.details
+		let cost = transaction.TransactionAmount
 		return (
 			<div className="transaction-container">
-				<label className="item">bus</label>
+				<label className="item">{transaction.TransactionVendor}</label>
 				<label className={this._getCostClass(cost)}>{cost}</label>
-				<label className="catagory">transportation</label>
+				<label className="catagory">
+					{transaction.TransactionCategory}
+				</label>
 				<button className="button">Delete</button>
 			</div>
 		)
