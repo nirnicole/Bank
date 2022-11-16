@@ -17,9 +17,20 @@ class Transactions extends Component {
 		return axios.get(ROUTES_TRANSACTIONS)
 	}
 
+	deleteTransaction = (id) => {
+		const self = this
+		const api = axios.create({ baseURL: ROUTES_TRANSACTIONS })
+		api.delete(`/${id}`)
+			.then((res) => {
+				self.componentDidMount()
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+
 	async componentDidMount() {
 		const response = await this.getTransactions()
-		console.log(response.data)
 		this.setState({ transactions: response.data.transactions })
 	}
 
@@ -27,8 +38,14 @@ class Transactions extends Component {
 		return (
 			<div className="transactions-container">
 				<h1>Transactions:</h1>
-				{this.state.transactions.map((t) => {
-					return <Transaction details={t}></Transaction>
+				{this.state.transactions.map((t, v) => {
+					return (
+						<Transaction
+							key={v}
+							details={t}
+							deleteTransaction={this.deleteTransaction}
+						></Transaction>
+					)
 				})}
 			</div>
 		)

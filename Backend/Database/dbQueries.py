@@ -23,20 +23,24 @@ def get_breakdown():
     except TypeError as e:
         print(e)
 
-# def insert_record(record):
-#     try:
-#         with connection.cursor() as cursor:
-#             query = f"INSERT IGNORE INTO recipes values({record})"
-#             cursor.execute(query)
-#             connection.commit()
-#     except TypeError as e:
-#         print(e)
+def add_transaction(transaction_details):
+    try:
+        with connection.cursor() as cursor:
+            amount, vendor, category = transaction_details
+            query = f"INSERT INTO {TBL_NAME}(TransactionAmount,TransactionVendor,TransactionCategory) values (%s,%s,%s)"
+            params = (amount, vendor, category)
+            cursor.execute(query,params)
+            connection.commit()
+    except TypeError as e:
+        print(e)
 
-# def ing_exist(table, column, val):
-#     cur = connection.cursor()
-#     cur.execute(f"SELECT {column} FROM {table} WHERE {column} = '{val}' LIMIT 1")
-#     if cur.fetchone():
-#         return True
-#     else:
-#         return False
+def delete_transaction(id):
+    try:
+        with connection.cursor() as cursor:
+            query = f"DELETE FROM {TBL_NAME} WHERE TransactionID = '{id}' LIMIT 1"
+            cursor.execute(query)
+            connection.commit()
+            return cursor.fetchall()
+    except TypeError as e:
+        print(e)
 

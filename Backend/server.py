@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 # from Database import dbInitializer            #do not delete! uncomment when loading for the first time
-from Routes import dataFetchingRouter
+from Routes import transactionsRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -22,7 +22,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(dataFetchingRouter.router)
+app.include_router(transactionsRouter.router)
 
 
 if __name__ == "__main__":

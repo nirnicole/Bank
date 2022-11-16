@@ -7,6 +7,11 @@ class Transaction extends Component {
 		this.state = {}
 	}
 
+	handleButton = (e) => {
+		let transactionId = e.target.value
+		this.props.deleteTransaction(transactionId)
+	}
+
 	_getCostClass = (cost) => (cost >= 0 ? "cost-positive" : "cost-negetive")
 
 	render() {
@@ -19,7 +24,13 @@ class Transaction extends Component {
 				<label className="catagory">
 					{transaction.TransactionCategory}
 				</label>
-				<button className="button">Delete</button>
+				<button
+					value={transaction.TransactionID}
+					className="button"
+					onClick={this.handleButton}
+				>
+					Delete
+				</button>
 			</div>
 		)
 	}

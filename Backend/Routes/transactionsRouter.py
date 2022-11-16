@@ -7,6 +7,12 @@ from Database import dbQueries
 router = APIRouter()
 validator = input_validation.Validator()
 
+
+class Transaction(BaseModel):
+    amount: int
+    vendor: str
+    category: str
+
 @router.get('/breakdown', status_code=200)
 async def get_breakdown(user_id="0"):
     if validator.no_input(user_id) or not validator.is_numeric(user_id):
@@ -32,21 +38,23 @@ async def get_transactions(user_id="0"):
 
 
 
-# @router.post('/insource/')
-# async def post(request: Request):
-#     global caching_metadata
-#     response = await request.json()   
-#     key = list(response.keys())[0]     
-#     val = response[key]
-#     dbQueries.create_number(key, val)
+@router.post('/transactions')
+async def post_transaction(transaction: Transaction):
+    try:
+        transaction_details = [transaction.amount, transaction.vendor, transaction.category]
+        dbQueries.add_transaction(transaction_details)
+        return {"result": list(transaction_details)}
+    except:
+        raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
 
-#     print(response)
-#     return response
 
-# @router.delete('/insource/{item_id}')
-# def delete(item_id):
-#     global caching_metadata
-#     item_id=int(item_id)
-#     item = caching_metadata[item_id]
-#     del caching_metadata[item_id]
-#     return item
+
+@router.delete('/transactions/{id}')
+def delete_transaction(id):
+    try:
+        id=int(id)
+        res = dbQueries.delete_transaction(id)
+        print(res)
+        return {"result": "deleted"}
+    except:
+        raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")

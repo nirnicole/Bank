@@ -19,7 +19,6 @@ class Breakdown extends Component {
 
 	async componentDidMount() {
 		const response = await this.getBreakdown()
-		console.log(response.data)
 		this.setState({ categories: response.data.breakdown })
 	}
 
@@ -27,8 +26,8 @@ class Breakdown extends Component {
 		return (
 			<div className="breakdown-container">
 				<h1>Breakdown:</h1>
-				{this.state.categories.map((c) => {
-					return <CatagoryItem details={c}></CatagoryItem>
+				{this.state.categories.map((c, v) => {
+					return <CatagoryItem key={v} details={c}></CatagoryItem>
 				})}
 			</div>
 		)
