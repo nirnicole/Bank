@@ -1,9 +1,9 @@
 import "../styles/Transactions.css"
 import React, { Component } from "react"
 import Transaction from "./transaction"
-import axios from "axios"
+import axios from "../api/axios"
 
-const ROUTES_TRANSACTIONS = "http://localhost:8000/transactions"
+const ROUTES_TRANSACTIONS = "/transactions"
 
 class Transactions extends Component {
 	constructor() {
@@ -19,8 +19,8 @@ class Transactions extends Component {
 
 	deleteTransaction = (id) => {
 		const self = this
-		const api = axios.create({ baseURL: ROUTES_TRANSACTIONS })
-		api.delete(`/${id}`)
+		axios
+			.delete(`${ROUTES_TRANSACTIONS}/${id}`)
 			.then((res) => {
 				self.componentDidMount()
 			})

@@ -1,8 +1,8 @@
 import "../styles/Operations.css"
 import React, { Component } from "react"
-import axios from "axios"
+import axios from "../api/axios"
 
-const ROUTES_POST_TRANSACTION = "http://localhost:8000/transactions"
+const ROUTES_POST_TRANSACTION = "/transactions"
 
 class Operations extends Component {
 	constructor() {
@@ -32,12 +32,12 @@ class Operations extends Component {
 	}
 
 	_postTransaction = (amount, vendor, category) => {
-		const api = axios.create({ baseURL: ROUTES_POST_TRANSACTION })
-		api.post("", {
-			amount: amount,
-			vendor: vendor,
-			category: category,
-		})
+		axios
+			.post(ROUTES_POST_TRANSACTION, {
+				amount: amount,
+				vendor: vendor,
+				category: category,
+			})
 			.then((res) => {
 				console.log("Added:", res)
 			})

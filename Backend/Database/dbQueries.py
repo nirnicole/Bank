@@ -15,7 +15,18 @@ def get_transactions():
 def get_breakdown():
     try:
         with connection.cursor() as cursor:
-            get_categories_sum = f"SELECT TransactionCategory,SUM(TransactionAmount)  AS categorySum FROM {TBL_NAME} GROUP BY TransactionCategory;"
+            get_categories_sum = f"SELECT TransactionCategory,SUM(TransactionAmount) AS categorySum FROM {TBL_NAME} GROUP BY TransactionCategory;"
+            cursor.execute(get_categories_sum)
+            result = cursor.fetchall()
+            print(result)
+            return result
+    except TypeError as e:
+        print(e)
+
+def get_balance():
+    try:
+        with connection.cursor() as cursor:
+            get_categories_sum = f"SELECT UserId ,SUM(TransactionAmount)  AS balance FROM {TBL_NAME} GROUP BY UserId;"
             cursor.execute(get_categories_sum)
             result = cursor.fetchall()
             print(result)
@@ -44,3 +55,4 @@ def delete_transaction(id):
     except TypeError as e:
         print(e)
 
+ 

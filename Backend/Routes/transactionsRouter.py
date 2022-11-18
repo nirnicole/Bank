@@ -1,8 +1,10 @@
-from fastapi import APIRouter, HTTPException,Request
+from fastapi import APIRouter, HTTPException,Depends
 from pydantic import BaseModel
 from Routes import errorHandling
 from Routes import input_validation
 from Database import dbQueries
+from auth.JWT_bearer import jwtBearer
+
 
 router = APIRouter()
 validator = input_validation.Validator()
@@ -25,20 +27,17 @@ async def get_breakdown(user_id="0"):
             raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
 
 
-@router.get('/transactions', status_code=200)
-async def get_transactions(user_id="0"):
-    if validator.no_input(user_id) or not validator.is_numeric(user_id):
-        raise HTTPException(status_code = 400, detail="Bad Request: invalid user id")
-    else:
-        try:
-            res = dbQueries.get_transactions()
-            return {"transactions":res}
-        except:
-            raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
+@router.get('/transactions', dependencies=[Depends(jwtBearer())], status_code=200)
+async def get_transactions():
+    try:
+        res = dbQueries.get_transactions()
+        return {"transactions":res}
+    except:
+        raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
 
 
 
-@router.post('/transactions')
+@router.post('/transactions', status_code=201)
 async def post_transaction(transaction: Transaction):
     try:
         transaction_details = [transaction.amount, transaction.vendor, transaction.category]
@@ -49,7 +48,7 @@ async def post_transaction(transaction: Transaction):
 
 
 
-@router.delete('/transactions/{id}')
+@router.delete('/transactions/{id}', status_code=202)
 def delete_transaction(id):
     try:
         id=int(id)

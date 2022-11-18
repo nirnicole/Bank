@@ -1,9 +1,9 @@
 import "../styles/Breakdown.css"
 import React, { Component } from "react"
 import CatagoryItem from "./catagoryItem"
-import axios from "axios"
+import axios from "../api/axios"
 
-const ROUTES_BREAKDWON = "http://localhost:8000/breakdown"
+const ROUTES_BREAKDWON = "/breakdown"
 
 class Breakdown extends Component {
 	constructor() {
