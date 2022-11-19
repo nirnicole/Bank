@@ -1,4 +1,5 @@
-from Models.Database import transactions_queries as db
+from Models.Database import transactions_queries as tdb
+from Models.Database import users_queries as udb
 
 
 class Transactions:
@@ -7,24 +8,29 @@ class Transactions:
 #     self.age = age
 
     def get_all(self):
-        result = db.get_transactions()
+        result = tdb.get_transactions()
         return result
     
-    def add(self, tr_details):
-        result = db.add_transaction(tr_details)
+    def add(self, transaction):
+        user_name = transaction.user
+        print(user_name)
+        user_ID = udb.get_user(user_name)
+        print(user_ID)
+        transaction_details = [transaction.amount, transaction.vendor, transaction.category, user_ID]
+        result = tdb.add_transaction(transaction_details)
         return result
 
     def delete(self, tr_id):
-        result = db.delete_transaction(tr_id)
+        result = tdb.delete_transaction(tr_id)
         return result
 
     def get_balance(self):
-        result = db.get_balance()
+        result = tdb.get_balance()
         return result
 
     
     def get_breakdown(self):
-        result = db.get_breakdown()
+        result = tdb.get_breakdown()
         return result
 
     

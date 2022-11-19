@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import React from "react"
 import AuthContext from "../context/AuthProvider"
 import axios from "../api/axios"
+import profile from "../auth/profile"
 const LOGIN_URL = "/user/login"
 
 const Login = () => {
@@ -46,6 +47,8 @@ const Login = () => {
 					: ""
 				return config
 			})
+
+			profile.userName = user
 
 			setAuth({ user, pwd, roles, accessToken })
 			setUser("")

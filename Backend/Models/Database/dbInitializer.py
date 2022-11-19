@@ -46,11 +46,22 @@ def init_script():
 
                 #          /// DO YOUR TABLE INITIALIZATION HERE ////         #
 
+        query = """CREATE TABLE IF NOT EXISTS Users(
+                    UserID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    UserName VARCHAR(255),
+                    UserPassword VARCHAR(255))
+                    """
+        initial_connection.cursor().execute(query)
+        initial_connection.commit()
+
         query = """CREATE TABLE IF NOT EXISTS Transactions(
-                    TransactionID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    TransactionID INT NOT NULL AUTO_INCREMENT,
                     TransactionAmount INT,
                     TransactionVendor VARCHAR(255),
-                    TransactionCategory VARCHAR(255))
+                    TransactionCategory VARCHAR(255),
+                    TransactionUserID INT,
+                    PRIMARY KEY (TransactionID),
+                    FOREIGN KEY (TransactionUserID) REFERENCES Users(UserID))
                     """
         initial_connection.cursor().execute(query)
         initial_connection.commit()
@@ -79,11 +90,11 @@ def init_script():
             print("inserting values...")
 
             #          /// DO YOUR TABLE INSERTS HERE ////         #
-            query = "INSERT INTO transactions(TransactionAmount,TransactionVendor,TransactionCategory) VALUES (%s,%s,%s)"
-            params = MOCK_DATA
-            print(params)
-            cursor.executemany(query,params)
-            initial_connection.commit()
+            # query = "INSERT INTO transactions(TransactionAmount,TransactionVendor,TransactionCategory) VALUES (%s,%s,%s)"
+            # params = MOCK_DATA
+            # print(params)
+            # cursor.executemany(query,params)
+            # initial_connection.commit()
             print("Done!")    
     except Exception: 
         print(Exception.args[0])

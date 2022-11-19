@@ -1,9 +1,9 @@
 from Models.Database import dbController
 
 connection = dbController.get_connection()
-TBL_NAME = "transactions"
+TBL_NAME = "users"
 
-def get_transactions():
+def get_users():
     try:
         with connection.cursor() as cursor:
             get_table = f"SELECT * FROM {TBL_NAME}"
@@ -12,6 +12,22 @@ def get_transactions():
             return result
     except TypeError as e:
         print(e)
+
+def get_user(name):
+    try:
+        print("in users q")
+        with connection.cursor() as cursor:
+            print(name)
+            query = f"SELECT * FROM {TBL_NAME} WHERE UserName = '{name}' LIMIT 1"
+            cursor.execute(query)
+            connection.commit()
+            return cursor.fetchone()
+    except TypeError as e:
+        print(e)
+
+ 
+
+#  
 
 def get_breakdown():
     try:

@@ -28,9 +28,9 @@ async def get_transactions():
 @router.post('/transactions', status_code=201)
 async def post_transaction(transaction: Transaction):
     try:
-        transaction_details = [transaction.amount, transaction.vendor, transaction.category]
-        model_transactions.add(transaction_details)
-        return {"result": list(transaction_details)}
+        print(transaction)
+        model_transactions.add(transaction)
+        return {"result": list(transaction)}
     except:
         raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
 

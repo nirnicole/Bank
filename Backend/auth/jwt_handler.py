@@ -1,10 +1,11 @@
 #this file is responsible for signing, encodeng, decodeing and returninig JWTs.
-import time
+import datetime
 import jwt
 from decouple import config
 
 JWT_SECRET = config("secret")
 JWT_ALGORITHM = config("algorithm")
+EXPIRY_SECONDS = 20
 
 #returns the generated tokens (JWTs)
 def token_response(token: str):
@@ -16,8 +17,9 @@ def token_response(token: str):
 def signJWT(userID: str):
     payload = {
         "userID": userID,
-        "expiry": time.time() + 180000
+        "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=EXPIRY_SECONDS)
     }
+    print(datetime.datetime.now(tz=datetime.timezone.utc))
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     return token_response(token)
 
@@ -25,6 +27,7 @@ def signJWT(userID: str):
 def decodeJWT(token: str):
     try:
         decode_token = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
-        return decode_token if decode_token['expires'] >= time.time() else None
+        print(decode_token)
+        return decode_token if decode_token['expires'] >= datetime.datetime.now(tz=datetime.timezone.utc) else None
     except:
         return {}

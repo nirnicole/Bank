@@ -1,6 +1,7 @@
 import "../styles/Operations.css"
 import React, { Component } from "react"
 import axios from "../api/axios"
+import profile from "../auth/profile"
 
 const ROUTES_POST_TRANSACTION = "/transactions"
 
@@ -24,19 +25,22 @@ class Operations extends Component {
 		let amount = this.state.amount
 		const vendor = this.state.vendor
 		const category = this.state.category
+		const user = profile.userName
+		console.log(user)
 		let element = e.target.name
 		if (element === "withdraw") {
 			amount = amount * -1
 		}
-		this._postTransaction(amount, vendor, category)
+		this._postTransaction(amount, vendor, category, user)
 	}
 
-	_postTransaction = (amount, vendor, category) => {
+	_postTransaction = (amount, vendor, category, user) => {
 		axios
 			.post(ROUTES_POST_TRANSACTION, {
 				amount: amount,
 				vendor: vendor,
 				category: category,
+				user: user,
 			})
 			.then((res) => {
 				console.log("Added:", res)

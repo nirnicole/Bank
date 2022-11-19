@@ -3,7 +3,9 @@ import uvicorn
 from Routes import transactionsRouter
 from Routes import authenticationRouter
 from fastapi.middleware.cors import CORSMiddleware
+from Models.Database import dbController
 
+dbController.run_init_script()
 app = FastAPI()
 
 origins = [
@@ -23,7 +25,6 @@ app.add_middleware(
 
 app.include_router(authenticationRouter.router)
 app.include_router(transactionsRouter.router)
-
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
