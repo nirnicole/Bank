@@ -1,36 +1,24 @@
 from fastapi import APIRouter, HTTPException,Depends
-from pydantic import BaseModel
-from Routes import errorHandling
-from Routes import input_validation
-from Database import dbQueries
+from Models.Transactions import Transactions
 from auth.JWT_bearer import jwtBearer
+from Schemas.Transaction import Transaction
 
-
-router = APIRouter()
-validator = input_validation.Validator()
-
-
-class Transaction(BaseModel):
-    amount: int
-    vendor: str
-    category: str
+router = APIRouter(dependencies=[Depends(jwtBearer())])
+model_transactions = Transactions()
 
 @router.get('/breakdown', status_code=200)
 async def get_breakdown(user_id="0"):
-    if validator.no_input(user_id) or not validator.is_numeric(user_id):
-        raise HTTPException(status_code = 400, detail="Bad Request: invalid user id")
-    else:
-        try:
-            res = dbQueries.get_breakdown()
-            return {"breakdown":res}
-        except:
-            raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
+    try:
+        res = model_transactions.get_breakdown()
+        return {"breakdown":res}
+    except:
+        raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
 
 
-@router.get('/transactions', dependencies=[Depends(jwtBearer())], status_code=200)
+@router.get('/transactions', status_code=200)
 async def get_transactions():
     try:
-        res = dbQueries.get_transactions()
+        res = model_transactions.get_all()
         return {"transactions":res}
     except:
         raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
@@ -41,7 +29,7 @@ async def get_transactions():
 async def post_transaction(transaction: Transaction):
     try:
         transaction_details = [transaction.amount, transaction.vendor, transaction.category]
-        dbQueries.add_transaction(transaction_details)
+        model_transactions.add(transaction_details)
         return {"result": list(transaction_details)}
     except:
         raise HTTPException(status_code = 404, detail="Bad Request: user does not exist")
@@ -52,7 +40,7 @@ async def post_transaction(transaction: Transaction):
 def delete_transaction(id):
     try:
         id=int(id)
-        res = dbQueries.delete_transaction(id)
+        res = model_transactions.delete(id)
         print(res)
         return {"result": "deleted"}
     except:

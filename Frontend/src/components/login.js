@@ -28,26 +28,25 @@ const Login = () => {
 		e.preventDefault()
 
 		try {
-			const response = await axios
-				.post(LOGIN_URL, JSON.stringify({ user, pwd }), {
+			const response = await axios.post(
+				LOGIN_URL,
+				JSON.stringify({ user, pwd }),
+				{
 					headers: { "Content-Type": "application/json" },
 					withCredentials: true,
-				})
-				.then(
-					axios.interceptors.request.use(function (config) {
-						const token = response.data.accessToken
-						config.headers.Authorization = token
-							? `Bearer ${token}`
-							: ""
-						console.log(config)
-						return config
-					})
-				)
+				}
+			)
 
-			console.log(JSON.stringify(response.data))
-			//console.log(JSON.stringify(response));
 			const accessToken = response.data.accessToken
 			const roles = response.data.roles
+
+			axios.interceptors.request.use(function (config) {
+				config.headers.Authorization = accessToken
+					? `Bearer ${accessToken}`
+					: ""
+				return config
+			})
+
 			setAuth({ user, pwd, roles, accessToken })
 			setUser("")
 			setPwd("")

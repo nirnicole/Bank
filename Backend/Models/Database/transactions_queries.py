@@ -1,5 +1,7 @@
-from Database.dbConnection import connection
+from Models.Database.dbController import DBController
 
+db_manager = DBController()
+connection = db_manager.get_connection()
 TBL_NAME = "transactions"
 
 def get_transactions():

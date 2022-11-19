@@ -1,9 +1,7 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 import uvicorn
-# from Database import dbInitializer            #do not delete! uncomment when loading for the first time
 from Routes import transactionsRouter
-from Routes import loginRouter
+from Routes import authenticationRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -23,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(loginRouter.router)
+app.include_router(authenticationRouter.router)
 app.include_router(transactionsRouter.router)
 
 
