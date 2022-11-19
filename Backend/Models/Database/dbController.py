@@ -1,18 +1,14 @@
 import pymysql
 from Models.Database import dbInitializer
+from utils.decorators import run_once
 
 DB_NAME = "bank_app"
-running = False
-connection = None
 
+@run_once
 def run_init_script():
-    global running
-    if not running:
-        dbInitializer.init_script()
-        running = True
+    dbInitializer.init_script()
 
 def get_connection():
-    global connection
     connection = pymysql.connect(
         host="localhost",
         user="root",
@@ -24,8 +20,6 @@ def get_connection():
     return connection
 
 def close_connection():
-    global connection
-    global running
+    connection = get_connection()
     connection.close()
-    running = False
 

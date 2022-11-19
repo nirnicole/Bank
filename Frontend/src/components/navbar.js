@@ -11,7 +11,7 @@ class NavBar extends Component {
 	render() {
 		return (
 			<div id="main-links">
-				<Link to="/">Welcome</Link>
+				<Link to="/">Home</Link>
 				<Link to="/transactions">Transactions</Link>
 				<Link to="/operations">Operations</Link>
 				<Link to="/breakdown">Breakdown</Link>

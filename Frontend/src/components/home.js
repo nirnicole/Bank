@@ -7,17 +7,22 @@ import Operations from "./operations"
 import Breakdown from "./breakdown"
 import NavBar from "./navbar"
 import Balance from "./balance"
-import Login from "./login"
+import Login from "./authentication/login"
+import Unauthorized from "./authentication/unauthorized"
+import profile from "../auth/profile"
 
 class Home extends Component {
 	constructor() {
 		super()
-		this.state = { balance: 2500 }
+		this.state = {}
 	}
 
-	getTransactionsPage = () => <Transactions></Transactions>
-	getOperationsPage = () => <Operations></Operations>
-	getBreakdownPage = () => <Breakdown></Breakdown>
+	getTransactionsPage = () =>
+		profile.userName ? <Transactions></Transactions> : <Unauthorized />
+	getOperationsPage = () =>
+		profile.userName ? <Operations></Operations> : <Unauthorized />
+	getBreakdownPage = () =>
+		profile.userName ? <Breakdown></Breakdown> : <Unauthorized />
 
 	getAppRoutes = () => {
 		return (
@@ -48,7 +53,7 @@ class Home extends Component {
 			<div className="App">
 				<div className="footer">
 					<NavBar></NavBar>
-					<Balance balance={this.state.balance}></Balance>
+					{profile.userName ? <Balance></Balance> : null}
 				</div>
 				<div id="bank-interface">{this.getAppRoutes()}</div>
 			</div>

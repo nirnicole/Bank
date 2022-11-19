@@ -1,6 +1,7 @@
 import "../styles/Welcome.css"
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
+import profile from "../auth/profile"
 
 class Welcome extends Component {
 	constructor() {
@@ -12,8 +13,12 @@ class Welcome extends Component {
 		return (
 			<div id="welcome">
 				<h1>Welcome to The Chupidala National Bank!</h1>
-				<h2>Please login first:</h2>
-				<Link to="/login">Log in</Link>
+				{profile.userName ? (
+					<h2>Sign in with a different account:</h2>
+				) : (
+					<h2>Sign in:</h2>
+				)}
+				<Link to="/login">Login</Link>
 			</div>
 		)
 	}

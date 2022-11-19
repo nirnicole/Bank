@@ -1,10 +1,10 @@
-import "../styles/Login.css"
+import "../../styles/Login.css"
 import { useRef, useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import React from "react"
-import AuthContext from "../context/AuthProvider"
-import axios from "../api/axios"
-import profile from "../auth/profile"
+import AuthContext from "../../context/AuthProvider"
+import axios from "../../api/axios"
+import profile from "../../auth/profile"
 const LOGIN_URL = "/user/login"
 
 const Login = () => {

@@ -19,7 +19,6 @@ def signJWT(userID: str):
         "userID": userID,
         "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=EXPIRY_SECONDS)
     }
-    print(datetime.datetime.now(tz=datetime.timezone.utc))
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     return token_response(token)
 
@@ -27,7 +26,6 @@ def signJWT(userID: str):
 def decodeJWT(token: str):
     try:
         decode_token = jwt.decode(token, JWT_SECRET, algorithm=JWT_ALGORITHM)
-        print(decode_token)
         return decode_token if decode_token['expires'] >= datetime.datetime.now(tz=datetime.timezone.utc) else None
     except:
         return {}
