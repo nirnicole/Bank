@@ -3,19 +3,15 @@ from Models.Database import users_queries as udb
 
 
 class Transactions:
-#   def __init__(self, name, age):
-#     self.name = name
-#     self.age = age
 
-    def get_all(self):
-        result = tdb.get_transactions()
+    def get_all(self, user_name):
+        user_ID = udb.get_user(user_name)["UserID"]
+        result = tdb.get_transactions(user_ID)
         return result
     
     def add(self, transaction):
         user_name = transaction.user
-        print(user_name)
-        user_ID = udb.get_user(user_name)
-        print(user_ID)
+        user_ID = udb.get_user(user_name)["UserID"]
         transaction_details = [transaction.amount, transaction.vendor, transaction.category, user_ID]
         result = tdb.add_transaction(transaction_details)
         return result
@@ -24,13 +20,19 @@ class Transactions:
         result = tdb.delete_transaction(tr_id)
         return result
 
-    def get_balance(self):
-        result = tdb.get_balance()
-        return result
+    def get_balance(self, user_name):
+        user_ID = udb.get_user(user_name)["UserID"]
+        result = tdb.get_balance(user_ID)
+        try:
+            return int(result['balance'])
+        except:
+            return 0
+
 
     
-    def get_breakdown(self):
-        result = tdb.get_breakdown()
+    def get_breakdown(self, user_name):
+        user_ID = udb.get_user(user_name)["UserID"]
+        result = tdb.get_breakdown(user_ID)
         return result
 
     

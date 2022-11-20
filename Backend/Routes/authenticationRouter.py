@@ -7,21 +7,17 @@ from Schemas.UserLoginSchema import UserLoginSchema
 
 router = APIRouter()
 validator = input_validation.Validator()
-
-users = []
-
+model_users = Users()
 
 
 @router.post("/user/signup", tags=["user"])
 def user_signup(user: UserSchema = Body(default=None)):
-    users.append(user)
+    model_users.add(user)
     return signJWT(user.user)
 
-def check_user(data:UserLoginSchema):
-    for user in users:
-        if user.user == data.user and user.pwd == data.pwd:
-            return True
-    return False
+def check_user(user_details:UserLoginSchema):
+    return model_users.validate(user_details)
+
 
 @router.post("/user/login", tags=["user"])
 def user_login(user:UserLoginSchema = Body()):

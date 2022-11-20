@@ -3,34 +3,33 @@ from Models.Database import dbController
 connection = dbController.get_connection()
 TBL_NAME = "transactions"
 
-def get_transactions():
+def get_transactions(user_id):
     try:
         with connection.cursor() as cursor:
-            get_table = f"SELECT * FROM {TBL_NAME}"
+            get_table = f"SELECT * FROM {TBL_NAME} WHERE TransactionUserID = '{user_id}'"
             cursor.execute(get_table)
             result = cursor.fetchall()
-            return result
-    except TypeError as e:
-        print(e)
-
-def get_breakdown():
-    try:
-        with connection.cursor() as cursor:
-            get_categories_sum = f"SELECT TransactionCategory,SUM(TransactionAmount) AS categorySum FROM {TBL_NAME} GROUP BY TransactionCategory;"
-            cursor.execute(get_categories_sum)
-            result = cursor.fetchall()
             print(result)
             return result
     except TypeError as e:
         print(e)
 
-def get_balance():
+def get_breakdown(user_id):
     try:
         with connection.cursor() as cursor:
-            get_categories_sum = f"SELECT UserId ,SUM(TransactionAmount)  AS balance FROM {TBL_NAME} GROUP BY UserId;"
+            get_categories_sum = f"SELECT TransactionCategory,SUM(TransactionAmount) AS categorySum FROM {TBL_NAME} WHERE TransactionUserID = '{user_id}' GROUP BY TransactionCategory;"
             cursor.execute(get_categories_sum)
             result = cursor.fetchall()
-            print(result)
+            return result
+    except TypeError as e:
+        print(e)
+
+def get_balance(user_id):
+    try:
+        with connection.cursor() as cursor:
+            get_categories_sum = f"SELECT SUM(TransactionAmount) AS balance FROM {TBL_NAME} WHERE TransactionUserID = '{user_id}' GROUP BY TransactionUserID;"
+            cursor.execute(get_categories_sum)
+            result = cursor.fetchone()
             return result
     except TypeError as e:
         print(e)

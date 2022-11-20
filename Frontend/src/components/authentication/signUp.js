@@ -1,21 +1,18 @@
-import "../../styles/Login.css"
-import { useRef, useState, useEffect, useContext } from "react"
+import "../../styles/Signup.css"
+import { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import React from "react"
-import AuthContext from "../../context/AuthProvider"
 import axios from "../../api/axios"
 import profile from "../../auth/profile"
-const LOGIN_URL = "/user/login"
+const SIGNUP_URL = "/user/signup"
 
-const Login = () => {
-	const { setAuth } = useContext(AuthContext)
-	const userRef = useRef()
-	const errRef = useRef()
-
+const SignUp = () => {
 	const [user, setUser] = useState("")
 	const [pwd, setPwd] = useState("")
-	const [errMsg, setErrMsg] = useState("")
 	const [success, setSuccess] = useState(false)
+	const userRef = useRef()
+	const errRef = useRef()
+	const [errMsg, setErrMsg] = useState("")
 
 	useEffect(() => {
 		userRef.current.focus()
@@ -31,28 +28,13 @@ const Login = () => {
 		try {
 			axios.interceptors.request.clear()
 			const response = await axios.post(
-				LOGIN_URL,
+				SIGNUP_URL,
 				JSON.stringify({ user, pwd }),
 				{
 					headers: { "Content-Type": "application/json" },
-					withCredentials: true,
 				}
 			)
 
-			const accessToken = response.data.accessToken
-			const roles = response.data.roles
-
-			axios.interceptors.request.use(function (config) {
-				config.headers.Authorization = accessToken
-					? `Bearer ${accessToken}`
-					: ""
-				config.headers.user = accessToken ? `${user}` : ""
-				return config
-			})
-
-			profile.userName = user
-
-			setAuth({ user, pwd, roles, accessToken })
 			setUser("")
 			setPwd("")
 			setSuccess(true)
@@ -71,13 +53,13 @@ const Login = () => {
 	}
 
 	return (
-		<div className="login-container">
+		<div className="signup-container">
 			{success ? (
 				<section>
-					<h1>You are logged in!</h1>
+					<h1>You are signed up!</h1>
 					<br />
 					<p>
-						<Link to="/transactions">Go to Home</Link>
+						<Link to="/login">Login</Link>
 					</p>
 				</section>
 			) : (
@@ -89,7 +71,7 @@ const Login = () => {
 					>
 						{errMsg}
 					</p>
-					<h1>Sign In</h1>
+					<h1>Register</h1>
 					<form onSubmit={handleSubmit}>
 						<label htmlFor="username">Username:</label>
 						<input
@@ -110,18 +92,11 @@ const Login = () => {
 							value={pwd}
 							required
 						/>
-						<button>Sign In</button>
+						<button>Send</button>
 					</form>
-					<p>
-						Need an Account?
-						<br />
-						<span className="line">
-							<Link to="/signup">SignUp</Link>
-						</span>
-					</p>
 				</section>
 			)}
 		</div>
 	)
 }
-export default Login
+export default SignUp

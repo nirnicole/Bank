@@ -26,7 +26,6 @@ class Operations extends Component {
 		const vendor = this.state.vendor
 		const category = this.state.category
 		const user = profile.userName
-		console.log(user)
 		let element = e.target.name
 		if (element === "withdraw") {
 			amount = amount * -1
@@ -42,9 +41,7 @@ class Operations extends Component {
 				category: category,
 				user: user,
 			})
-			.then((res) => {
-				console.log("Added:", res)
-			})
+			.then((res) => {})
 			.catch((error) => {
 				console.log(error)
 			})

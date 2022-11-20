@@ -95,7 +95,7 @@ def init_script():
             # print(params)
             # cursor.executemany(query,params)
             # initial_connection.commit()
-            print("Done!")    
+
     except Exception: 
         print(Exception.args[0])
         print("coudlnt insert values!")

@@ -9,7 +9,7 @@ import NavBar from "./navbar"
 import Balance from "./balance"
 import Login from "./authentication/login"
 import Unauthorized from "./authentication/unauthorized"
-import profile from "../auth/profile"
+import SignUp from "./authentication/signUp"
 
 class Home extends Component {
 	constructor() {
@@ -18,16 +18,17 @@ class Home extends Component {
 	}
 
 	getTransactionsPage = () =>
-		profile.userName ? <Transactions></Transactions> : <Unauthorized />
+		this.props.auth.user ? <Transactions></Transactions> : <Unauthorized />
 	getOperationsPage = () =>
-		profile.userName ? <Operations></Operations> : <Unauthorized />
+		this.props.auth.user ? <Operations></Operations> : <Unauthorized />
 	getBreakdownPage = () =>
-		profile.userName ? <Breakdown></Breakdown> : <Unauthorized />
+		this.props.auth.user ? <Breakdown></Breakdown> : <Unauthorized />
 
 	getAppRoutes = () => {
 		return (
 			<div className="routs-container">
 				<Route exact path="/" render={() => <Welcome />} />
+				<Route exact path="/signup" render={() => <SignUp />} />
 				<Route exact path="/login" render={() => <Login />} />
 				<Route
 					exact
@@ -53,7 +54,7 @@ class Home extends Component {
 			<div className="App">
 				<div className="footer">
 					<NavBar></NavBar>
-					{profile.userName ? <Balance></Balance> : null}
+					{this.props.auth.user ? <Balance></Balance> : null}
 				</div>
 				<div id="bank-interface">{this.getAppRoutes()}</div>
 			</div>

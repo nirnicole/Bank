@@ -1,15 +1,24 @@
 import "../styles/Balance.css"
-import React, { Component } from "react"
+import React from "react"
+import { useState, useEffect } from "react"
+import axios from "../api/axios"
+const ROUTES_BALANCE = "/balance"
 
-class Balance extends Component {
-	constructor() {
-		super()
-		this.state = {}
+const Balance = () => {
+	const [balance, setBalance] = useState("")
+
+	const getBalance = async () => {
+		return await axios.get(ROUTES_BALANCE).then((res) => {
+			const balance = res.data.balance
+			setBalance(balance)
+		})
 	}
 
-	render() {
-		return <div id="balance">balance: {this.props.balance}$</div>
-	}
+	useEffect(() => {
+		getBalance()
+	})
+
+	return <div id="balance">balance: {balance}$</div>
 }
 
 export default Balance
